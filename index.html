@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>行李打包清單 v1.5.1</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHg9IjE0IiB5PSIxOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iOCIgZmlsbD0iIzJmODBlZCIvPgo8cGF0aCBkPSJNMjQgMTh2LTVjMC0zIDItNSA1LTVoNmMzIDAgNSAyIDUgNXY1IiBmaWxsPSJub25lIiBzdHJva2U9IiMyZjgwZWQiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxyZWN0IHg9IjIwIiB5PSIyNyIgd2lkdGg9IjI0IiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjZmZmIi8+CjxyZWN0IHg9IjIwIiB5PSIzNyIgd2lkdGg9IjI0IiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjZmZmIi8+CjxjaXJjbGUgY3g9IjIyIiBjeT0iNTciIHI9IjMiIGZpbGw9IiMzMzMiLz4KPGNpcmNsZSBjeD0iNDIiIGN5PSI1NyIgcj0iMyIgZmlsbD0iIzMzMyIvPgo8L3N2Zz4=">
+<link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHg9IjE0IiB5PSIxOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iOCIgZmlsbD0iIzJmODBlZCIvPgo8cGF0aCBkPSJNMjQgMTh2LTVjMC0zIDItNSA1LTVoNmMzIDAgNSAyIDUgNXY1IiBmaWxsPSJub25lIiBzdHJva2U9IiMyZjgwZWQiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxyZWN0IHg9IjIwIiB5PSIyNyIgd2lkdGg9IjI0IiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjZmZmIi8+CjxyZWN0IHg9IjIwIiB5PSIzNyIgd2lkdGg9IjI0IiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjZmZmIi8+CjxjaXJjbGUgY3g9IjIyIiBjeT0iNTciIHI9IjMiIGZpbGw9IiMzMzMiLz4KPGNpcmNsZSBjeD0iNDIiIGN5PSI1NyIgcj0iMyIgZmlsbD0iIzMzMyIvPgo8L3N2Zz4=">
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#fff; --text:#222; --muted:#72777f; --line:#e7e8eb;
+  --accent:#2f80ed; --accent-soft:#eaf3ff; --ok:#1f9d63; --warn:#f2a93b;
+  --shadow:0 6px 24px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1440px;margin:auto;padding:14px 18px 10px}
+.title-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.app-title{font-size:22px;font-weight:800}
+.trip-title{font-size:18px;font-weight:700;color:#333}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 11px}
+.btn:hover{background:#fafafa}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.ghost{background:transparent}
+.nav{display:flex;gap:6px;margin-top:12px;overflow:auto}
+.nav button{border:0;background:transparent;padding:9px 13px;border-radius:10px;color:#666;white-space:nowrap}
+.nav button.active{background:#eef1f5;color:#111;font-weight:700}
+.wrap{max-width:1440px;margin:auto;padding:18px}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.toolbar .group{display:flex;gap:6px;align-items:center}
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:#eef1f5;color:#555;font-size:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:920px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{position:sticky;top:0;background:#fafbfc;color:#676d75;font-size:13px;z-index:2}
+td.item-name{font-weight:650}
+.cat{display:inline-block;padding:3px 7px;border-radius:6px;background:#eee;font-size:12px;color:#555}
+.cat.c1{background:#efe7ff;color:#684c9b}.cat.c2{background:#fff3c9;color:#7d6414}.cat.c3{background:#fde7ef;color:#9b4767}.cat.c4{background:#e8f5ea;color:#407b4a}
+.checkbox{width:20px;height:20px;accent-color:var(--accent)}
+.subtle{color:var(--muted);font-size:13px}
+.board{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:16px;align-items:start}
+.column{
+  --list-bg:#f7f9fc;
+  --list-border:#dfe6ef;
+  --list-accent:#6b7c93;
+  background:var(--list-bg);
+  border:1px solid var(--list-border);
+  border-radius:16px;
+  padding:12px;
+  min-height:180px;
+  box-shadow:0 5px 18px rgba(34,42,53,.06);
+}
+.column:nth-child(6n+1){--list-bg:#fff8ef;--list-border:#f3dcc0;--list-accent:#b9772e}
+.column:nth-child(6n+2){--list-bg:#f3f8ff;--list-border:#d6e5f8;--list-accent:#4777b6}
+.column:nth-child(6n+3){--list-bg:#f5fbf6;--list-border:#d8eadc;--list-accent:#4f8a5b}
+.column:nth-child(6n+4){--list-bg:#fbf5ff;--list-border:#e6d9ef;--list-accent:#855ba0}
+.column:nth-child(6n+5){--list-bg:#fff5f7;--list-border:#f1d9df;--list-accent:#ad5d72}
+.column:nth-child(6n+6){--list-bg:#f6fafb;--list-border:#d9e7ea;--list-accent:#5c8790}
+.column h3{
+  margin:0 0 10px;
+  padding:4px 4px 10px;
+  font-size:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:2px solid color-mix(in srgb,var(--list-accent) 28%, transparent);
+}
+.column h3 .cat{
+  background:transparent;
+  color:var(--list-accent);
+  font-weight:800;
+  padding:2px 0;
+}
+.card{
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(0,0,0,.07);
+  border-radius:12px;
+  padding:12px;
+  margin:9px 0;
+  box-shadow:0 2px 8px rgba(0,0,0,.045);
+  transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+.card:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(0,0,0,.08)}
+.card.packed{
+  opacity:.56;
+  background:rgba(255,255,255,.72);
+}
+.card .name{line-height:1.35}
+.card .meta{margin-top:10px}
+.person-pill{
+  font-size:12px;
+  background:#eef3ff;
+  color:#47669b;
+  padding:4px 8px;
+  border-radius:999px;
+  font-weight:700
+}
+.card .name{font-size:16px;font-weight:700;margin-bottom:8px}
+.card .meta{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.person-pill{font-size:12px;background:#eef3ff;color:#47669b;padding:3px 7px;border-radius:999px}
+.tag-picker{display:flex;gap:6px;flex-wrap:wrap}
+.tag-toggle{border:1px solid #dfe2e6;background:#fff;color:#555;border-radius:999px;padding:5px 9px;font-size:12px}
+.tag-toggle.active{background:var(--accent-soft);border-color:#9fc5f8;color:#235fa8;font-weight:700}
+.tag-toggle.shared.active{background:#fff4d8;border-color:#efd17e;color:#7c6415}
+.note-input{min-width:220px;width:100%;padding:8px 9px;border:1px solid #dfe2e6;border-radius:8px;background:#fff}
+.note-stack{display:flex;flex-direction:column;gap:6px;min-width:300px}
+.note-line{display:grid;grid-template-columns:72px 1fr;gap:7px;align-items:center}
+.note-owner{font-size:12px;font-weight:700;color:#58606a;background:#f1f3f5;border-radius:999px;padding:4px 7px;text-align:center}
+.note-text{margin-top:7px;padding:7px 8px;background:#f7f8fa;border-radius:8px;color:#555;font-size:13px;white-space:pre-wrap}
+.person-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.person-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px}
+.person-tabs button.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.board-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}
+.board-title h2{margin:0;font-size:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-row{display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;margin:10px 0}
+input[type=text], input[type=date], select{width:100%;padding:9px 10px;border:1px solid #dfe2e6;border-radius:9px;background:#fff}
+.list{padding:4px 0}
+.list-row{display:grid;grid-template-columns:1.4fr .8fr .8fr auto;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line)}
+.trip-row{grid-template-columns:44px 1.4fr .8fr .8fr auto}
+.list-row:last-child{border-bottom:0}
+.action-row{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.star-btn{
+  border:0;
+  background:transparent;
+  padding:4px 6px;
+  font-size:22px;
+  line-height:1;
+  color:#b8bdc5;
+  border-radius:8px;
+}
+.star-btn:hover{background:#f3f4f6;color:#8a9098}
+.star-btn.active{color:#f2b01e}
+
+.category-manager{display:grid;grid-template-columns:minmax(220px,360px) 1fr;gap:14px;margin-bottom:14px}
+.category-list{padding:6px}
+.category-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px;border-bottom:1px solid var(--line)}
+.category-row:last-child{border-bottom:0}
+.category-count{font-size:12px;color:var(--muted)}
+.section-title{font-weight:800;margin:0 0 10px}
+.master-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:14px;align-items:start}
+.master-sidebar{position:sticky;top:126px}
+.master-side-card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px}
+.master-cat-list{display:flex;flex-direction:column;gap:6px}
+.master-cat-btn{width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;border-radius:10px;padding:9px 10px;text-align:left}
+.master-cat-btn:hover{background:#f7f8fa}
+.master-cat-btn.active{background:var(--accent-soft);border-color:#bfd7fb;color:#245f9f;font-weight:800}
+.master-main{min-width:0}
+.master-item-row{grid-template-columns:minmax(220px,1.5fr) minmax(140px,.8fr) auto}
+.master-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.master-toolbar .grow{flex:1;min-width:180px}
+.master-count{font-size:12px;color:var(--muted)}
+.compact-add{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.compact-add input,.compact-add select,.compact-add button{width:100%}
+.compact-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+@media(max-width:900px){
+  .master-layout{grid-template-columns:1fr}
+  .master-sidebar{position:static}
+  .compact-add{grid-template-columns:1fr}
+}
+@media(max-width:800px){.category-manager{grid-template-columns:1fr}}
+.kpi{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.kpi .box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 13px;min-width:135px}
+.kpi strong{font-size:20px}
+.empty{padding:36px;text-align:center;color:#777}
+dialog{border:0;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,.25);width:min(620px,92vw)}
+dialog::backdrop{background:rgba(0,0,0,.32)}
+.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.small{font-size:12px}
+.notice{background:#fff8db;border:1px solid #f5df85;border-radius:10px;padding:9px 11px;color:#66551a;margin-bottom:12px}
+.apply-box{margin-top:12px;padding:12px;border:1px dashed #cfd5dc;border-radius:10px;background:#fafbfc}
+.apply-row{display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;margin:8px 0}
+.checkline{display:flex;align-items:center;gap:8px;font-size:13px;color:#555}
+.help{font-size:12px;color:var(--muted);line-height:1.6}
+.new-dot{display:inline-block;width:7px;height:7px;background:#f2a93b;border-radius:50%;margin-left:6px}
+@media(max-width:950px){
+  .board{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .trip-title{font-size:15px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="title-row">
+      <div class="app-title">🧳 行李打包清單 <span class="subtle">v1.5.1</span></div>
+      <div class="trip-title" id="tripTitle"></div>
+      <div class="spacer"></div>
+            <button class="btn primary" onclick="openShareDialog()">產生分享版 HTML</button>
+      <button class="btn" onclick="exportData()">匯出 JSON</button>
+      <label class="btn">匯入 JSON<input id="importFile" type="file" accept=".json" hidden onchange="importData(event)"></label>
+    </div>
+    <nav class="nav">
+      <button data-view="trips" onclick="showView('trips')">旅程</button>
+      <button data-view="prepare" onclick="showView('prepare')">應準備</button>
+      <button data-view="pack" onclick="showView('pack')">打包</button>
+      <button data-view="master" onclick="showView('master')">總清單</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="view-trips"></section>
+  <section id="view-prepare" hidden></section>
+  <section id="view-pack" hidden></section>
+  <section id="view-master" hidden></section>
+</main>
+
+<dialog id="tripDlg">
+  <h2>建立新旅程</h2>
+  <div class="form-row"><label>旅程名稱</label><input id="tripName" type="text" placeholder="例：2026 中秋節"></div>
+  <div class="form-row"><label>日期</label><input id="tripStartDate" type="date"></div>
+  <div class="form-row"><label>日期說明</label><input id="tripDate" type="text" placeholder="例：9/25-9/28（可留空）"></div>
+  <div class="form-row"><label>旅程天數</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input id="tripDays" type="number" min="1" step="1" placeholder="天" style="max-width:110px">
+      <span>天</span>
+      <input id="tripNights" type="number" min="0" step="1" placeholder="夜" style="max-width:110px">
+      <span>夜</span>
+    </div>
+  </div>
+  <div class="form-row"><label>旅客</label><input id="tripPeople" type="text" placeholder="以逗號分隔，例如：我, 哥哥, 妹妹"></div>
+  <div class="form-row"><label>套用舊旅程</label><select id="tripCopy"></select></div>
+  <div class="notice small">新旅程永遠讀取最新版「總清單」；若套用舊旅程，只會複製當時的「應準備」選擇，不會把舊清單整份複製一份。</div>
+  <div class="dialog-actions"><button class="btn" onclick="tripDlg.close()">取消</button><button class="btn primary" onclick="createTrip()">建立</button></div>
+</dialog>
+
+<dialog id="shareDlg">
+  <h2>產生分享版 HTML</h2>
+  <div class="form-row">
+    <label>分享旅程</label>
+    <div id="shareTripLabel" style="font-weight:700"></div>
+  </div>
+  <div class="form-row">
+    <label>分享對象</label>
+    <select id="shareTarget"></select>
+  </div>
+  <div class="form-row">
+    <label>共用項目</label>
+    <label class="checkline"><input id="shareIncludeShared" type="checkbox"> 一併加入「共用」打包清單</label>
+  </div>
+  <div class="notice small">
+    分享版只會帶入目前旅程與指定人物。若勾選「共用項目」，分享版會另外提供「共用」看板；不會包含其他旅程或其他人物的清單。
+  </div>
+  <div class="dialog-actions">
+    <button class="btn" onclick="shareDlg.close()">取消</button>
+    <button class="btn primary" onclick="exportShareHtml()">產生 HTML</button>
+  </div>
+</dialog>
+
+<dialog id="editItemDlg">
+  <h2>編輯物品</h2>
+  <input id="editItemId" type="hidden">
+  <div class="form-row">
+    <label>物品名稱</label>
+    <input id="editItemName" type="text">
+  </div>
+  <div class="form-row">
+    <label>類別</label>
+    <select id="editItemCat"></select>
+  </div>
+  <div class="dialog-actions">
+    <button class="btn" onclick="editItemDlg.close()">取消</button>
+    <button class="btn primary" onclick="saveItemEdit()">儲存</button>
+  </div>
+</dialog>
+
+<dialog id="editTripDlg">
+  <h2>編輯旅程</h2>
+  <input id="editTripId" type="hidden">
+  <div class="form-row"><label>旅程名稱</label><input id="editTripName" type="text"></div>
+  <div class="form-row"><label>日期</label><input id="editTripStartDate" type="date"></div>
+  <div class="form-row"><label>日期說明</label><input id="editTripDate" type="text" placeholder="例：9/25-9/28（可留空）"></div>
+  <div class="form-row"><label>旅程天數</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input id="editTripDays" type="number" min="1" step="1" placeholder="天" style="max-width:110px">
+      <span>天</span>
+      <input id="editTripNights" type="number" min="0" step="1" placeholder="夜" style="max-width:110px">
+      <span>夜</span>
+    </div>
+  </div>
+  <div class="form-row"><label>旅客</label><input id="editTripPeople" type="text" placeholder="以逗號分隔，例如：爸爸, 媽媽, 哥哥"></div>
+  <div class="notice small">若移除旅客，該旅客在此旅程中的應準備、已打包與個別註解會一併刪除。</div>
+  <div class="apply-box">
+    <div style="font-weight:800;margin-bottom:6px">從其他旅程補充套用</div>
+    <div class="help">只會把來源旅程中「有勾選的應準備項目」補進目前旅程，不會刪除目前既有資料，也不會改掉已打包狀態。</div>
+    <div class="apply-row"><label>來源旅程</label><select id="editTripApplySource"></select></div>
+    <label class="checkline"><input id="editTripCopyNotes" type="checkbox"> 同時複製個別註解</label>
+  </div>
+  <div class="dialog-actions">
+    <button class="btn" onclick="editTripDlg.close()">取消</button>
+    <button class="btn primary" onclick="saveTripEdit()">儲存</button>
+  </div>
+</dialog>
+
+<script>
+const KEY='packing_tool_v10';
+const seed = {
+  master:[
+    {id:'m1',name:'手機',cat:'隨身用品',scope:'個人'},
+    {id:'m2',name:'鑰匙',cat:'隨身用品',scope:'個人'},
+    {id:'m3',name:'皮包',cat:'隨身用品',scope:'個人'},
+    {id:'m4',name:'祈福手環',cat:'隨身用品',scope:'個人'},
+    {id:'m5',name:'雨傘',cat:'其他',scope:'共用'},
+    {id:'m6',name:'摺疊衣架',cat:'其他',scope:'共用'},
+    {id:'m7',name:'露營用枕頭',cat:'其他',scope:'共用'},
+    {id:'m8',name:'食物剪',cat:'其他',scope:'共用'},
+    {id:'m9',name:'保溫杯／水瓶',cat:'其他',scope:'個人'},
+    {id:'m10',name:'眼罩',cat:'其他',scope:'個人'},
+    {id:'m11',name:'筆',cat:'票證及文具',scope:'個人'},
+    {id:'m12',name:'筆記本',cat:'票證及文具',scope:'個人'},
+    {id:'m13',name:'處方藥',cat:'藥品包',scope:'個人'},
+    {id:'m14',name:'抗生素',cat:'藥品包',scope:'個人'},
+    {id:'m15',name:'指甲剪',cat:'藥品包',scope:'共用'},
+    {id:'m16',name:'牙線棒',cat:'藥品包',scope:'個人'},
+    {id:'m17',name:'美康藥膏',cat:'藥品包',scope:'個人'}
+  ],
+  trips:[{
+    id:'t1', name:'2026 西灣盃', startDate:'2026-09-12', date:'2026.09.12-13', days:2, nights:1, people:['我','哥哥'],
+    notes:{},
+    states:{
+      'm1':{'我':{need:true,packed:true},'哥哥':{need:true,packed:true}},
+      'm2':{'我':{need:true,packed:true},'哥哥':{need:true,packed:true}},
+      'm3':{'我':{need:true,packed:true},'哥哥':{need:true,packed:true}},
+      'm4':{'我':{need:true,packed:false},'哥哥':{need:false,packed:false}},
+      'm5':{'共用':{need:true,packed:false}},
+      'm6':{'共用':{need:true,packed:true}},
+      'm13':{'我':{need:true,packed:true},'哥哥':{need:false,packed:false}},
+      'm14':{'我':{need:true,packed:true},'哥哥':{need:false,packed:false}},
+      'm15':{'共用':{need:true,packed:true}},
+      'm16':{'我':{need:true,packed:true},'哥哥':{need:true,packed:true}},
+      'm17':{'我':{need:true,packed:true},'哥哥':{need:false,packed:false}}
+    },
+    knownMasterIds:['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13','m14','m15','m16','m17']
+  }],
+  currentTrip:'t1'
+};
+let db = JSON.parse(localStorage.getItem(KEY)||'null') || seed;
+db.categories ??= [...new Set(db.master.map(x=>x.cat))];
+db.master.forEach(i=>{ if(!db.categories.includes(i.cat)) db.categories.push(i.cat); });
+// v0.6 起，「個人／共用」不再是總清單的限制條件，只保留舊資料欄位以相容既有 JSON。
+let view='prepare';
+let packBoardPerson=null;
+let prepareCategoryFilter='全部';
+let masterCategoryFilter='全部';
+const SHARE_TARGET=null;
+const SHARE_INCLUDE_SHARED=false;
+const $=s=>document.querySelector(s);
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const trip=()=>db.trips.find(t=>t.id===db.currentTrip)||db.trips[0]||null;
+
+function catClass(cat){
+  const cats=db.categories||[];
+  return 'c'+((Math.max(0,cats.indexOf(cat))%4)+1);
+}
+function sortedMasterItems(){
+  const order=new Map((db.categories||[]).map((c,idx)=>[c,idx]));
+  return [...db.master].sort((a,b)=>{
+    const ca=order.has(a.cat)?order.get(a.cat):999999;
+    const cb=order.has(b.cat)?order.get(b.cat):999999;
+    if(ca!==cb) return ca-cb;
+    return String(a.name||'').localeCompare(String(b.name||''),'zh-Hant',{numeric:true,sensitivity:'base'});
+  });
+}
+function stateFor(t,item,person){
+  t.states[item.id] ??= {};
+  const key=person;
+  t.states[item.id][key] ??= {need:false,packed:false};
+  return t.states[item.id][key];
+}
+function activePeople(t,item){ return [...t.people,'共用']; }
+
+function showView(v){
+  view=v;
+  ['trips','prepare','pack','master'].forEach(x=>{
+    $('#view-'+x).hidden=x!==v;
+    document.querySelector(`[data-view="${x}"]`).classList.toggle('active',x===v);
+  });
+  render();
+}
+function render(){
+  const t=trip();
+  $('#tripTitle').textContent=t?`｜ ${formatTripDate(t)} ｜ ${formatTripDuration(t)} ｜ ${t.name}`:'';
+  renderTrips(); renderPrepare(); renderPack(); renderMaster();
+}
+
+function formatTripDate(t){
+  if(t.date && String(t.date).trim()) return String(t.date).trim();
+  if(t.startDate) return t.startDate.replaceAll('-','.');
+  return '未填日期';
+}
+function formatTripDuration(t){
+  const d=Number(t.days), n=Number(t.nights);
+  if(Number.isFinite(d) && d>0 && Number.isFinite(n) && n>=0) return `${d}天${n}夜`;
+  if(Number.isFinite(d) && d>0) return `${d}天`;
+  return '未填天數';
+}
+function tripSortValue(t){
+  return t.startDate ? new Date(t.startDate+'T00:00:00').getTime() : -Infinity;
+}
+function sortedTrips(){
+  return [...db.trips].sort((a,b)=>{
+    if(!!a.pinned!==!!b.pinned) return a.pinned ? -1 : 1;
+    const d=tripSortValue(b)-tripSortValue(a); // 日期新到舊
+    if(d!==0) return d;
+    return String(b.id).localeCompare(String(a.id)); // 同日期時，較後建立者在前
+  });
+}
+
+function renderTrips(){
+  const root=$('#view-trips');
+  root.innerHTML=`<div class="toolbar">
+    <button class="btn primary" onclick="openTripDialog()">＋ 新旅程</button>
+  </div>
+  <div class="panel list">${db.trips.length?sortedTrips().map(t=>`
+    <div class="list-row trip-row">
+      <div><button class="star-btn ${t.pinned?'active':''}" title="${t.pinned?'取消置頂':'置頂'}" onclick="toggleTripPin('${t.id}')">★</button></div>
+      <div><strong>${esc(t.name)}</strong><div class="subtle">${esc(formatTripDate(t))} ｜ ${esc(formatTripDuration(t))}</div></div>
+      <div>${t.people.map(p=>`<span class="badge">${esc(p)}</span>`).join(' ')}</div>
+      <div>${tripProgress(t)}</div>
+      <div class="action-row">
+        <button class="btn" onclick="selectTrip('${t.id}')">${t.id===db.currentTrip?'使用中':'開啟'}</button>
+        <button class="btn" onclick="openEditTrip('${t.id}')">編輯</button>
+        <button class="btn" onclick="deleteTrip('${t.id}')">刪除</button>
+      </div>
+    </div>`).join(''):'<div class="empty">尚未建立旅程。</div>'}</div>`;
+}
+function openEditTrip(id){
+  const t=db.trips.find(x=>x.id===id); if(!t)return;
+  $('#editTripId').value=t.id;
+  $('#editTripName').value=t.name||'';
+  $('#editTripStartDate').value=t.startDate||'';
+  $('#editTripDate').value=t.date||'';
+  $('#editTripDays').value=t.days??'';
+  $('#editTripNights').value=t.nights??'';
+  $('#editTripPeople').value=t.people.join(', ');
+  $('#editTripApplySource').innerHTML=
+    '<option value="">不套用</option>'+
+    db.trips.filter(x=>x.id!==id).map(x=>`<option value="${x.id}">${esc(x.date||'')}｜${esc(x.name)}</option>`).join('');
+  $('#editTripCopyNotes').checked=false;
+  editTripDlg.showModal();
+}
+function saveTripEdit(){
+  const id=$('#editTripId').value;
+  const t=db.trips.find(x=>x.id===id); if(!t)return;
+  const name=$('#editTripName').value.trim();
+  const startDate=$('#editTripStartDate').value;
+  const date=$('#editTripDate').value.trim();
+  const days=$('#editTripDays').value===''?'':Number($('#editTripDays').value);
+  const nights=$('#editTripNights').value===''?'':Number($('#editTripNights').value);
+  const people=[...new Set($('#editTripPeople').value.split(/[,，]/).map(x=>x.trim()).filter(Boolean))];
+  if(!name || !people.length) return alert('旅程名稱與至少一位旅客不可空白');
+
+  const removed=t.people.filter(p=>!people.includes(p));
+  if(removed.length){
+    const msg=`將移除旅客：${removed.join('、')}。
+其應準備、已打包與個別註解也會刪除，是否繼續？`;
+    if(!confirm(msg)) return;
+    db.master.forEach(i=>{
+      if(t.states?.[i.id]) removed.forEach(p=>delete t.states[i.id][p]);
+      if(t.notes?.[i.id]) removed.forEach(p=>delete t.notes[i.id][p]);
+    });
+  }
+
+  t.name=name; t.startDate=startDate; t.date=date; t.days=days; t.nights=nights; t.people=people;
+
+  const sourceId=$('#editTripApplySource').value;
+  const copyNotes=$('#editTripCopyNotes').checked;
+  if(sourceId){
+    const source=db.trips.find(x=>x.id===sourceId);
+    if(source) supplementFromTrip(t,source,copyNotes);
+  }
+
+  editTripDlg.close(); save(); render();
+}
+function supplementFromTrip(target,source,copyNotes){
+  target.states ??= {}; target.notes ??= {};
+  db.master.forEach(i=>{
+    const sourceKeys=[...source.people,'共用'];
+    sourceKeys.forEach(sourcePerson=>{
+      const ss=source.states?.[i.id]?.[sourcePerson];
+      if(!ss?.need) return;
+
+      // 同名旅客才直接對應；「共用」則直接對應共用。
+      let targetPerson=sourcePerson==='共用' ? '共用' : (target.people.includes(sourcePerson) ? sourcePerson : null);
+      if(!targetPerson) return;
+
+      const ts=stateFor(target,i,targetPerson);
+      // 只補「應準備」，不動目前已打包狀態。
+      ts.need=true;
+
+      if(copyNotes){
+        const note=source.notes?.[i.id]?.[sourcePerson];
+        if(note && !(target.notes?.[i.id]?.[targetPerson])){
+          target.notes[i.id] ??= {};
+          target.notes[i.id][targetPerson]=note;
+        }
+      }
+    });
+  });
+}
+function deleteTrip(id){
+  const t=db.trips.find(x=>x.id===id); if(!t)return;
+  if(!confirm(`確定刪除旅程「${t.name}」？
+此旅程的應準備、打包進度與註解都會一併刪除。`)) return;
+  db.trips=db.trips.filter(x=>x.id!==id);
+  if(db.currentTrip===id) db.currentTrip=db.trips[0]?.id || null;
+  save(); render();
+}
+function toggleTripPin(id){
+  const t=db.trips.find(x=>x.id===id);
+  if(!t) return;
+  t.pinned=!t.pinned;
+  save();
+  renderTrips();
+}
+function tripProgress(t){
+  let n=0,p=0;
+  db.master.forEach(i=>activePeople(t,i).forEach(person=>{
+    const s=stateFor(t,i,person); if(s.need){n++; if(s.packed)p++;}
+  }));
+  return `<span class="subtle">${p}/${n} 已打包</span>`;
+}
+function selectTrip(id){db.currentTrip=id;save();showView('prepare')}
+
+function renderPrepare(){
+  const root=$('#view-prepare'); const t=trip(); if(!t){root.innerHTML='<div class="empty">請先建立旅程</div>';return}
+  t.notes ??= {};
+  const newIds=db.master.filter(i=>!(t.knownMasterIds||[]).includes(i.id)).map(i=>i.id);
+
+  const filterOptions=['全部',...(db.categories||[])];
+  if(!filterOptions.includes(prepareCategoryFilter)) prepareCategoryFilter='全部';
+  const visibleItems=sortedMasterItems().filter(i=>prepareCategoryFilter==='全部' || i.cat===prepareCategoryFilter);
+
+  root.innerHTML=`
+  ${newIds.length?`<div class="notice">總清單比這趟旅程建立時多了 <b>${newIds.length}</b> 個新項目，已自動出現在清單中，尚未勾選。</div>`:''}
+  <div class="toolbar">
+    <div class="group"><span class="subtle">旅客：</span>${t.people.map(p=>`<span class="badge">${esc(p)}</span>`).join(' ')} <span class="badge">共用</span></div>
+    <div class="group">
+      <span class="subtle">類別：</span>
+      <select onchange="setPrepareCategoryFilter(this.value)" style="min-width:150px">
+        ${filterOptions.map(c=>`<option value="${escAttr(c)}" ${c===prepareCategoryFilter?'selected':''}>${esc(c)}</option>`).join('')}
+      </select>
+      <span class="subtle">顯示 ${visibleItems.length} / ${db.master.length} 項</span>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn" onclick="markKnown()">標記已檢視新項目</button>
+  </div>
+  <div class="panel table-wrap"><table>
+    <thead><tr><th>類別</th><th>名稱</th><th>打包人</th><th>個別註解</th></tr></thead>
+    <tbody>${visibleItems.map(i=>`
+      <tr>
+        <td><span class="cat ${catClass(i.cat)}">${esc(i.cat)}</span></td>
+        <td class="item-name">${esc(i.name)}${newIds.includes(i.id)?'<span class="new-dot" title="新項目"></span>':''}</td>
+        <td>${packerTags(t,i)}</td>
+        <td>${noteEditors(t,i)}</td>
+      </tr>`).join('')}</tbody>
+  </table></div>`;
+}
+function setPrepareCategoryFilter(cat){
+  prepareCategoryFilter=cat;
+  renderPrepare();
+}
+function noteEditors(t,i){
+  const selected=[...t.people,'共用'].filter(p=>stateFor(t,i,p).need);
+  if(!selected.length) return '<span class="subtle">先選擇打包人，才能填寫註解</span>';
+  return `<div class="note-stack">${selected.map(p=>`
+    <div class="note-line">
+      <span class="note-owner">${esc(p)}</span>
+      <input class="note-input" type="text"
+        value="${escAttr(t.notes?.[i.id]?.[p]||'')}"
+        placeholder="例：黑色運動長褲"
+        oninput="setNote('${i.id}','${js(p)}',this.value)">
+    </div>`).join('')}</div>`;
+}
+function packerTags(t,i){
+  const people=SHARE_TARGET ? (SHARE_INCLUDE_SHARED ? [SHARE_TARGET,'共用'] : [SHARE_TARGET]) : [...t.people,'共用'];
+  return `<div class="tag-picker">${people.map(p=>{
+    const s=stateFor(t,i,p);
+    const active=s.need;
+    return `<button type="button" class="tag-toggle ${p==='共用'?'shared':''} ${active?'active':''}" onclick="togglePacker('${i.id}','${js(p)}')">${esc(p)}</button>`;
+  }).join('')}</div>`;
+}
+function togglePacker(itemId,p){
+  const t=trip(),i=db.master.find(x=>x.id===itemId);
+  t.notes ??= {};
+  t.notes[i.id] ??= {};
+  if(p==='共用'){
+    // 共用與個人互斥。
+    const target=stateFor(t,i,'共用');
+    const next=!target.need;
+    t.people.forEach(person=>{ const s=stateFor(t,i,person); s.need=false; s.packed=false; });
+    target.need=next; if(!next) target.packed=false;
+  }else{
+    // 個人可多選；選個人時取消共用。
+    const shared=stateFor(t,i,'共用'); shared.need=false; shared.packed=false;
+    const target=stateFor(t,i,p); target.need=!target.need; if(!target.need) target.packed=false;
+  }
+  save(); renderPrepare(); renderPack(); renderTrips();
+}
+function setNote(itemId,p,val){
+  const t=trip(); t.notes ??= {}; t.notes[itemId] ??= {}; t.notes[itemId][p]=val; save();
+}
+function needBox(t,i,p){
+  const s=stateFor(t,i,p);
+  return `<input class="checkbox" type="checkbox" ${s.need?'checked':''} onchange="setNeed('${i.id}','${js(p)}',this.checked)">`;
+}
+function setNeed(itemId,p,val){
+  const t=trip(),i=db.master.find(x=>x.id===itemId),s=stateFor(t,i,p);
+  s.need=val; if(!val)s.packed=false; save(); render();
+}
+function markKnown(){const t=trip();t.knownMasterIds=db.master.map(i=>i.id);save();render()}
+
+function renderPack(){
+  const root=$('#view-pack'); const t=trip(); if(!t){root.innerHTML='<div class="empty">請先建立旅程</div>';return}
+  const people=[...t.people,'共用'];
+  if(!packBoardPerson || !people.includes(packBoardPerson)) packBoardPerson=people[0];
+
+  const person=packBoardPerson;
+  let total=0, packed=0;
+  const groups={};
+
+  db.master.forEach(i=>{
+    const s=stateFor(t,i,person);
+    if(!s.need) return;
+    total++; if(s.packed) packed++;
+    (groups[i.cat]??=[]).push({i,p:person,s});
+  });
+
+  root.innerHTML=`
+    <div class="person-tabs">
+      ${people.map(p=>{
+        let n=0,k=0;
+        db.master.forEach(i=>{ const s=stateFor(t,i,p); if(s.need){n++; if(s.packed)k++;} });
+        return `<button class="${p===person?'active':''}" onclick="selectPackBoard('${js(p)}')">${esc(p)} <span class="small">${k}/${n}</span></button>`;
+      }).join('')}
+    </div>
+
+    <div class="board-title">
+      <h2>${esc(person)}的打包看板</h2>
+      <span class="subtle">${packed}/${total} 已打包</span>
+    </div>
+
+    <div class="kpi">
+      <div class="box"><div class="subtle">應準備</div><strong>${total}</strong></div>
+      <div class="box"><div class="subtle">已打包</div><strong>${packed}</strong></div>
+      <div class="box"><div class="subtle">完成率</div><strong>${total?Math.round(packed/total*100):0}%</strong></div>
+    </div>
+
+    ${total?`<div class="board">${Object.entries(groups).map(([cat,items])=>`
+      <div class="column"><h3><span class="cat ${catClass(cat)}">${esc(cat)}</span><span class="subtle">${items.filter(x=>x.s.packed).length}/${items.length}</span></h3>
+      ${items.map(x=>{
+        const note=t.notes?.[x.i.id]?.[person]||'';
+        return `<div class="card ${x.s.packed?'packed':''}">
+          <div class="name">${esc(x.i.name)}</div>
+          ${note?`<div class="note-text">${esc(note)}</div>`:''}
+          <div class="meta"><span class="person-pill">${esc(person)}</span>
+          <label><input class="checkbox" type="checkbox" ${x.s.packed?'checked':''} onchange="setPacked('${x.i.id}','${js(person)}',this.checked)"> 已準備</label></div>
+        </div>`;
+      }).join('')}</div>`).join('')}</div>`:'<div class="empty panel">這個人的「應準備」清單目前是空的。</div>'}`;
+}
+function selectPackBoard(p){
+  packBoardPerson=p;
+  renderPack();
+}
+function setPacked(itemId,p,val){
+  const t=trip(),i=db.master.find(x=>x.id===itemId),s=stateFor(t,i,p); s.packed=val; save(); renderPack(); renderTrips();
+}
+
+function renderMaster(){
+  const root=$('#view-master');
+  const filterOptions=['全部',...(db.categories||[])];
+  if(!filterOptions.includes(masterCategoryFilter)) masterCategoryFilter='全部';
+  const visibleItems=sortedMasterItems().filter(i=>masterCategoryFilter==='全部' || i.cat===masterCategoryFilter);
+
+  root.innerHTML=`
+  <div class="master-layout">
+    <aside class="master-sidebar">
+      <div class="master-side-card">
+        <div class="section-title">類別</div>
+        <div class="master-cat-list">
+          <button class="master-cat-btn ${masterCategoryFilter==='全部'?'active':''}" onclick="setMasterCategoryFilter('全部')">
+            <span>全部</span><span class="master-count">${db.master.length}</span>
+          </button>
+          ${db.categories.map(cat=>{
+            const count=db.master.filter(i=>i.cat===cat).length;
+            return `<button class="master-cat-btn ${masterCategoryFilter===cat?'active':''}" onclick="setMasterCategoryFilter('${js(cat)}')">
+              <span>${esc(cat)}</span><span class="master-count">${count}</span>
+            </button>`;
+          }).join('')}
+        </div>
+
+        <div class="compact-actions">
+          <button class="btn" onclick="promptAddCategory()">＋ 類別</button>
+          ${masterCategoryFilter!=='全部'?`
+            <button class="btn" onclick="renameCategory('${js(masterCategoryFilter)}')">改名</button>
+            <button class="btn" onclick="deleteCategory('${js(masterCategoryFilter)}')">刪除</button>
+          `:''}
+        </div>
+
+        <div class="section-title" style="margin-top:16px">新增物品</div>
+        <div class="compact-add">
+          <input id="newItemName" type="text" placeholder="物品名稱">
+          <select id="newItemCat">
+            ${db.categories.map(c=>`<option value="${escAttr(c)}" ${c===masterCategoryFilter?'selected':''}>${esc(c)}</option>`).join('')}
+          </select>
+          <button class="btn primary" onclick="addMaster()">新增</button>
+        </div>
+
+        <div class="compact-actions">
+          <label class="btn">匯入 CSV<input id="csvImportFile" type="file" accept=".csv,text/csv" hidden onchange="importMasterCsv(event)"></label>
+          <button class="btn" onclick="downloadCsvTemplate()">CSV 範本</button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="master-main">
+      <div class="master-toolbar">
+        <div>
+          <strong>${masterCategoryFilter==='全部'?'全部物品':esc(masterCategoryFilter)}</strong>
+          <div class="subtle">顯示 ${visibleItems.length} / ${db.master.length} 項</div>
+        </div>
+        <div class="spacer"></div>
+        <select onchange="setMasterCategoryFilter(this.value)" style="min-width:150px">
+          ${filterOptions.map(c=>`<option value="${escAttr(c)}" ${c===masterCategoryFilter?'selected':''}>${esc(c)}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="panel list">
+        ${visibleItems.length?visibleItems.map(i=>`
+          <div class="list-row master-item-row">
+            <div><strong>${esc(i.name)}</strong></div>
+            <div><span class="cat ${catClass(i.cat)}">${esc(i.cat)}</span></div>
+            <div class="action-row">
+              <button class="btn" onclick="editMaster('${i.id}')">編輯</button>
+              <button class="btn" onclick="delMaster('${i.id}')">刪除</button>
+            </div>
+          </div>`).join(''):'<div class="empty">此類別目前沒有物品。</div>'}
+      </div>
+    </section>
+  </div>`;
+}
+function setMasterCategoryFilter(cat){
+  masterCategoryFilter=cat;
+  renderMaster();
+}
+function promptAddCategory(){
+  const name=prompt('新增類別名稱：');
+  if(name===null) return;
+  const trimmed=name.trim();
+  if(!trimmed) return;
+  if(db.categories.includes(trimmed)) return alert('此類別已存在');
+  db.categories.push(trimmed);
+  masterCategoryFilter=trimmed;
+  save();
+  renderMaster();
+}
+function addCategory(){ promptAddCategory(); }
+function renameCategory(oldName){
+  const next=prompt('新的類別名稱：',oldName);
+  if(next===null) return;
+  const name=next.trim();
+  if(!name || name===oldName) return;
+  if(db.categories.includes(name)) return alert('此類別名稱已存在');
+  const idx=db.categories.indexOf(oldName);
+  if(idx>=0) db.categories[idx]=name;
+  db.master.forEach(i=>{ if(i.cat===oldName) i.cat=name; });
+  save(); render();
+}
+function deleteCategory(cat){
+  const count=db.master.filter(i=>i.cat===cat).length;
+  if(count>0) return alert(`「${cat}」目前仍有 ${count} 個物品，請先將這些物品改到其他類別後再刪除。`);
+  if(!confirm(`確定刪除類別「${cat}」？`)) return;
+  db.categories=db.categories.filter(c=>c!==cat); save(); renderMaster();
+}
+
+function parseCsv(text){
+  text=String(text||'').replace(/^\uFEFF/,'');
+  const rows=[];
+  let row=[], field='', inQuotes=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(inQuotes){
+      if(ch==='"' && text[i+1]==='"'){ field+='"'; i++; }
+      else if(ch==='"'){ inQuotes=false; }
+      else { field+=ch; }
+    }else{
+      if(ch==='"'){ inQuotes=true; }
+      else if(ch===','){ row.push(field); field=''; }
+      else if(ch==='\n'){
+        row.push(field); field='';
+        if(row.some(v=>String(v).trim()!=='')) rows.push(row);
+        row=[];
+      }else if(ch!=='\r'){ field+=ch; }
+    }
+  }
+  row.push(field);
+  if(row.some(v=>String(v).trim()!=='')) rows.push(row);
+  return rows;
+}
+function normalizeCsvHeader(s){
+  return String(s||'').trim().replace(/\s+/g,'').toLowerCase();
+}
+function importMasterCsv(e){
+  const file=e.target.files?.[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const rows=parseCsv(reader.result);
+      if(rows.length<2) throw new Error('CSV 沒有可匯入的明細');
+
+      const headers=rows[0].map(normalizeCsvHeader);
+      const nameAliases=['名稱','物品名稱','品名','name'];
+      const catAliases=['類別','分類','category'];
+
+      const nameIdx=headers.findIndex(h=>nameAliases.includes(h));
+      const catIdx=headers.findIndex(h=>catAliases.includes(h));
+      if(nameIdx<0 || catIdx<0){
+        throw new Error('找不到必要欄位。請使用「名稱,類別」作為表頭');
+      }
+
+      const incoming=[];
+      const newCats=new Set();
+      let blankSkipped=0, duplicateSkipped=0;
+
+      for(let r=1;r<rows.length;r++){
+        const name=String(rows[r][nameIdx]??'').trim();
+        const cat=String(rows[r][catIdx]??'').trim();
+        if(!name || !cat){ blankSkipped++; continue; }
+
+        const existsInDb=db.master.some(i=>i.name.trim()===name && i.cat.trim()===cat);
+        const existsIncoming=incoming.some(i=>i.name===name && i.cat===cat);
+        if(existsInDb || existsIncoming){ duplicateSkipped++; continue; }
+
+        incoming.push({name,cat});
+        if(!db.categories.includes(cat)) newCats.add(cat);
+      }
+
+      if(!incoming.length){
+        alert(`沒有新增任何物品。\n略過重複：${duplicateSkipped} 筆\n略過空白或缺欄位：${blankSkipped} 筆`);
+        e.target.value='';
+        return;
+      }
+
+      const catMsg=newCats.size
+        ? `\n將自動新增類別：${[...newCats].join('、')}`
+        : '';
+      const ok=confirm(
+        `準備匯入 ${incoming.length} 筆物品。`+
+        catMsg+
+        `\n略過重複：${duplicateSkipped} 筆`+
+        `\n略過空白或缺欄位：${blankSkipped} 筆`+
+        `\n\n是否繼續？`
+      );
+      if(!ok){ e.target.value=''; return; }
+
+      newCats.forEach(c=>db.categories.push(c));
+      incoming.forEach(x=>db.master.push({
+        id:'m'+Date.now()+Math.random().toString(36).slice(2,8),
+        name:x.name,
+        cat:x.cat
+      }));
+
+      save();
+      render();
+      alert(`匯入完成：${incoming.length} 筆\n新增類別：${newCats.size} 個\n略過重複：${duplicateSkipped} 筆\n略過空白或缺欄位：${blankSkipped} 筆`);
+    }catch(err){
+      alert('CSV 匯入失敗：'+(err?.message||err));
+    }finally{
+      e.target.value='';
+    }
+  };
+  reader.onerror=()=>{ alert('CSV 檔案讀取失敗'); e.target.value=''; };
+  reader.readAsText(file,'utf-8');
+}
+function downloadCsvTemplate(){
+  const sample=[
+    ['名稱','類別'],
+    ['手機','隨身用品'],
+    ['充電線','3C用品'],
+    ['黑色長褲','衣物']
+  ];
+  const csv='\uFEFF'+sample.map(row=>row.map(csvCell).join(',')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='行李打包總清單_匯入範本.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function csvCell(v){
+  const s=String(v??'');
+  return /[",\r\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s;
+}
+
+function addMaster(){
+  const name=$('#newItemName').value.trim(), cat=$('#newItemCat').value;
+  if(!name)return alert('請輸入物品名稱');
+  if(!cat)return alert('請先建立至少一個類別');
+  db.master.push({id:'m'+Date.now(),name,cat});save();render();
+}
+function editMaster(id){
+  const i=db.master.find(x=>x.id===id); if(!i)return;
+  $('#editItemId').value=i.id;
+  $('#editItemName').value=i.name||'';
+  $('#editItemCat').innerHTML=db.categories.map(c=>
+    `<option value="${escAttr(c)}" ${c===i.cat?'selected':''}>${esc(c)}</option>`
+  ).join('');
+  editItemDlg.showModal();
+}
+function saveItemEdit(){
+  const id=$('#editItemId').value;
+  const i=db.master.find(x=>x.id===id); if(!i)return;
+  const name=$('#editItemName').value.trim();
+  const cat=$('#editItemCat').value;
+  if(!name) return alert('物品名稱不可空白');
+  if(!cat) return alert('請選擇類別');
+  i.name=name;
+  i.cat=cat;
+  delete i.scope;
+  editItemDlg.close();
+  save();
+  render();
+}
+function delMaster(id){
+  const item=db.master.find(x=>x.id===id); if(!confirm(`刪除「${item.name}」？歷史旅程中也不再顯示。`))return;
+  db.master=db.master.filter(x=>x.id!==id);save();render();
+}
+
+function openTripDialog(){
+  $('#tripName').value=''; $('#tripStartDate').value=''; $('#tripDate').value=''; $('#tripDays').value=''; $('#tripNights').value=''; $('#tripPeople').value='我';
+  $('#tripCopy').innerHTML='<option value="">不套用（空白）</option>'+db.trips.map(t=>`<option value="${t.id}">${esc(t.date)}｜${esc(t.name)}</option>`).join('');
+  tripDlg.showModal();
+}
+function createTrip(){
+  const name=$('#tripName').value.trim(),startDate=$('#tripStartDate').value,date=$('#tripDate').value.trim(),days=$('#tripDays').value===''?'':Number($('#tripDays').value),nights=$('#tripNights').value===''?'':Number($('#tripNights').value),people=$('#tripPeople').value.split(/[,，]/).map(x=>x.trim()).filter(Boolean);
+  if(!name||!people.length)return alert('請填寫旅程名稱與至少一位旅客');
+  const copy=db.trips.find(t=>t.id===$('#tripCopy').value);
+  const t={id:'t'+Date.now(),name,startDate,date,days,nights,people,states:{},notes:{},knownMasterIds:db.master.map(i=>i.id)};
+  if(copy){
+    db.master.forEach(i=>{
+      const targetStates={};
+      people.forEach(p=>{
+        const old=copy.states?.[i.id]?.[p];
+        if(old?.need) targetStates[p]={need:true,packed:false};
+      });
+      const oldShared=copy.states?.[i.id]?.['共用'];
+      if(oldShared?.need) targetStates['共用']={need:true,packed:false};
+      if(Object.keys(targetStates).length) t.states[i.id]=targetStates;
+    });
+  }
+  db.trips.push(t); db.currentTrip=t.id; save(); tripDlg.close(); showView('prepare');
+}
+
+
+function openShareDialog(){
+  const t=trip();
+  if(!t) return alert('目前沒有可分享的旅程');
+  if(!t.people?.length) return alert('此旅程尚未設定旅客');
+  $('#shareTripLabel').textContent=`${formatTripDate(t)} ｜ ${formatTripDuration(t)} ｜ ${t.name}`;
+  $('#shareTarget').innerHTML=t.people.map(p=>`<option value="${escAttr(p)}">${esc(p)}</option>`).join('');
+  $('#shareIncludeShared').checked=false;
+  shareDlg.showModal();
+}
+
+function exportShareHtml(){
+  const t=trip();
+  if(!t) return alert('目前沒有可分享的旅程');
+
+  const target=$('#shareTarget')?.value;
+  const includeShared=!!$('#shareIncludeShared')?.checked;
+  if(!target || !t.people.includes(target)) return alert('請選擇有效的分享對象');
+
+  // 建立「單一旅程、單一對象」的乾淨快照。
+  const shareTrip={
+    ...t,
+    people:[target],
+    states:{},
+    notes:{}
+  };
+
+  db.master.forEach(i=>{
+    const itemStates={};
+    const itemNotes={};
+
+    const personState=t.states?.[i.id]?.[target];
+    if(personState) itemStates[target]={...personState};
+
+    const personNote=t.notes?.[i.id]?.[target];
+    if(personNote) itemNotes[target]=personNote;
+
+    if(includeShared){
+      const sharedState=t.states?.[i.id]?.['共用'];
+      if(sharedState) itemStates['共用']={...sharedState};
+
+      const sharedNote=t.notes?.[i.id]?.['共用'];
+      if(sharedNote) itemNotes['共用']=sharedNote;
+    }
+
+    if(Object.keys(itemStates).length) shareTrip.states[i.id]=itemStates;
+    if(Object.keys(itemNotes).length) shareTrip.notes[i.id]=itemNotes;
+  });
+
+  const shareDb={
+    master:db.master.map(i=>({...i})),
+    categories:[...(db.categories||[])],
+    trips:[shareTrip],
+    currentTrip:shareTrip.id
+  };
+
+  // 取目前整份程式碼，並把此刻資料快照嵌入新的 HTML。
+  let source='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  const snapshot=JSON.stringify(shareDb).replace(/</g,'\u003c');
+
+  // 每一份分享檔使用獨立 localStorage key。
+  const shareId='packing_share_'+Date.now();
+  source=source.replace(
+    "const KEY='packing_tool_v10';",
+    "const KEY='"+shareId+"';"
+  );
+
+  source=source.replace(
+    "let db = JSON.parse(localStorage.getItem(KEY)||'null') || seed;",
+    "const SHARE_SNAPSHOT="+snapshot+";\nlet db = JSON.parse(localStorage.getItem(KEY)||'null') || SHARE_SNAPSHOT;"
+  );
+
+  // 分享版限制為指定人物。
+  source=source.replace(
+    "const SHARE_TARGET=null;",
+    "const SHARE_TARGET="+JSON.stringify(target)+";"
+  );
+  source=source.replace(
+    "const SHARE_INCLUDE_SHARED=false;",
+    "const SHARE_INCLUDE_SHARED="+JSON.stringify(includeShared)+";"
+  );
+
+  // 分享版預設直接進入打包頁籤。
+  source=source.replace(
+    "showView('prepare');",
+    "showView('pack');"
+  );
+
+  // 分享版標示
+  source=source.replace(
+    /行李打包清單 <span class="subtle">v1\.5<\/span>/,
+    '行李打包清單 <span class="subtle">分享版｜'+esc(target)+(includeShared?'＋共用':'')+'</span>'
+  );
+
+  // 移除「產生分享版」按鈕，避免在分享檔裡再次產生分享檔。
+  source=source.replace(
+    /<button class="btn primary" onclick="openShareDialog\(\)">產生分享版 HTML<\/button>/,
+    ''
+  );
+
+  // 分享檔不需要旅程管理、總清單維護與匯入匯出入口。
+  source=source.replace(
+    /<button class="btn" onclick="openTripDialog\(\)">＋ 新旅程<\/button>/,
+    ''
+  );
+  source=source.replace(
+    /<button class="btn" onclick="exportData\(\)">匯出 JSON<\/button>/,
+    ''
+  );
+  source=source.replace(
+    /<label class="btn">匯入 JSON<input id="importFile"[^>]*><\/label>/,
+    ''
+  );
+
+  const safeTrip=(t.name||'旅程').replace(/[\/:*?"<>|]/g,'_').trim() || '旅程';
+  const safeTarget=target.replace(/[\/:*?"<>|]/g,'_').trim() || '旅客';
+  const blob=new Blob([source],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`${safeTrip}_${safeTarget}${includeShared?'_含共用':''}_行李打包清單_分享版.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  shareDlg.close();
+}
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='行李打包清單_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importData(e){
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=()=>{try{db=JSON.parse(r.result);save();render()}catch(err){alert('JSON 格式錯誤')}};r.readAsText(f);e.target.value='';
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function escAttr(s=''){return esc(s).replace(/`/g,'&#96;')}
+function js(s=''){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
+showView('prepare');
+</script>
+</body>
+</html>
